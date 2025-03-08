@@ -1,11 +1,24 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import GameMenu from '../components/GameMenu.astro';
+import BeeAnimation from '../components/BeeAnimation.astro';
+import SpellingGame from '../components/SpellingGame.astro';
 ---
 
-<Layout>
-	<Welcome />
+<Layout title="Spelling Bee Game">
+    <main class="container">
+        <BeeAnimation />
+        <GameMenu />
+        <SpellingGame client:load />
+    </main>
 </Layout>
+
+<style>
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 2rem;
+        background: linear-gradient(135deg, #FFD700, #FFA500);
+        min-height: 100vh;
+    }
+</style>

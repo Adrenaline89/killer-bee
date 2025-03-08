@@ -1,0 +1,66 @@
+---
+---
+
+<div class="game-container">
+    <div class="word-display"></div>
+    <input type="text" class="word-input" placeholder="Type the word here..." />
+    <div class="result"></div>
+</div>
+
+<script>
+    const wrongWords = new Set();
+    
+    // Sample word lists - expand these as needed
+    const words = {
+        easy: ['cat', 'dog', 'hat', 'run', 'jump'],
+        medium: ['beautiful', 'elephant', 'rainbow', 'bicycle'],
+        hard: ['extraordinary', 'sophisticated', 'phenomenon']
+    };
+
+    let currentWord = '';
+    const input = document.querySelector('.word-input');
+    const display = document.querySelector('.word-display');
+    const result = document.querySelector('.result');
+
+    function checkSpelling(word, input) {
+        if (word === input.toLowerCase()) {
+            result.innerHTML = '😊';
+            result.style.color = '#4CAF50';
+        } else {
+            result.innerHTML = '😞';
+            result.style.color = '#f44336';
+            wrongWords.add(word);
+        }
+    }
+
+    // Add event listeners here
+</script>
+
+<style>
+    .game-container {
+        background: white;
+        padding: 2rem;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .word-display {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+        text-align: center;
+    }
+
+    .word-input {
+        width: 100%;
+        padding: 1rem;
+        font-size: 1.2rem;
+        border: 2px solid #FFD700;
+        border-radius: 6px;
+        margin-bottom: 1rem;
+    }
+
+    .result {
+        font-size: 3rem;
+        text-align: center;
+    }
+</style>

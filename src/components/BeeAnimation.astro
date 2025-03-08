@@ -1,0 +1,27 @@
+---
+---
+
+<div class="bee-container">
+    <div class="bee"></div>
+</div>
+
+<style>
+    .bee-container {
+        height: 200px;
+        position: relative;
+    }
+
+    .bee {
+        width: 60px;
+        height: 40px;
+        background: repeating-linear-gradient(yellow, yellow 50%, black 50%, black 100%);
+        border-radius: 20px;
+        position: absolute;
+        animation: fly 4s infinite ease-in-out;
+    }
+
+    @keyframes fly {
+        0%, 100% { left: 0; top: 50%; }
+        50% { left: 80%; top: 30%; }
+    }
+</style>
