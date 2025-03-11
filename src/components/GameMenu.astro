@@ -5,17 +5,33 @@
     <button class="btn easy" data-difficulty="easy">Easy</button>
     <button class="btn medium" data-difficulty="medium">Medium</button>
     <button class="btn hard" data-difficulty="hard">Hard</button>
-    <button class="btn review">Review Mistakes</button>
+    <button class="btn review" id="review-btn">Review Mistakes</button>
 </div>
 
 <script>
     const buttons = document.querySelectorAll('.btn');
+    const reviewBtn = document.getElementById('review-btn');
+    
+    // Check if there are any wrong words to review
+    const wrongWords = JSON.parse(localStorage.getItem('wrongWords') || '[]');
+    if (reviewBtn) {
+        if (wrongWords.length === 0) {
+            (reviewBtn as HTMLButtonElement).disabled = true;
+            reviewBtn.title = "No mistakes to review yet";
+        } else {
+            reviewBtn.title = `You have ${wrongWords.length} words to review`;
+        }
+    }
     
     buttons.forEach(btn => {
         btn.addEventListener('click', () => {
             const difficulty = btn.getAttribute('data-difficulty');
             if (difficulty) {
                 sessionStorage.setItem('selectedDifficulty', difficulty);
+                sessionStorage.removeItem('reviewMode');
+                window.location.href = '/game';
+            } else if (btn.id === 'review-btn') {
+                sessionStorage.setItem('reviewMode', 'true');
                 window.location.href = '/game';
             }
         });
@@ -48,4 +64,9 @@
     .medium { background-color: #FFA500; color: white; }
     .hard { background-color: #f44336; color: white; }
     .review { background-color: #2196F3; color: white; }
+
+    .btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
 </style>

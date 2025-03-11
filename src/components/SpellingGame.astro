@@ -6,6 +6,7 @@
     <input type="text" class="word-input" placeholder="Type the word here..." />
     <button class="submit-btn">Check</button>
     <div class="result"></div>
+    <div class="mode-indicator"></div>
 </div>
 
 <script>
@@ -19,11 +20,28 @@
     if (!localStorage.getItem('wordLists')) {
         localStorage.setItem('wordLists', JSON.stringify(wordLists));
     }
-
-    const wrongWords = new Set();
-    const difficulty = sessionStorage.getItem('selectedDifficulty') || 'easy';
-    const storedWordLists = localStorage.getItem('wordLists') || JSON.stringify(wordLists);
-    const words = JSON.parse(storedWordLists)[difficulty];
+    
+    // Load wrong words from localStorage or initialize empty array
+    let wrongWords: string[] = [];
+    if (localStorage.getItem('wrongWords')) {
+        wrongWords = JSON.parse(localStorage.getItem('wrongWords') || '[]') as string[];
+    }
+    
+    // Check if we're in review mode
+    const isReviewMode = sessionStorage.getItem('reviewMode') === 'true';
+    
+    let words: string[] = [];
+    if (isReviewMode && wrongWords.length > 0) {
+        // Use wrong words if in review mode and we have wrong words
+        words = wrongWords;
+    } else {
+        // Use regular difficulty words
+        const difficulty = sessionStorage.getItem('selectedDifficulty') || 'easy';
+        const storedWordLists = localStorage.getItem('wordLists') || JSON.stringify(wordLists);
+        words = JSON.parse(storedWordLists)[difficulty];
+        // Clear review mode if we're not using it
+        sessionStorage.removeItem('reviewMode');
+    }
     
     let currentWord = '';
     let currentIndex = -1;
@@ -31,25 +49,36 @@
     const input = document.querySelector('.word-input') as HTMLInputElement;
     const display = document.querySelector('.word-display');
     const result = document.querySelector('.result') as HTMLElement;
-    const submitBtn = document.querySelector('.submit-btn');
+    const submitBtn = document.querySelector('.submit-btn') as HTMLButtonElement;
+    const modeIndicator = document.querySelector('.mode-indicator');
 
     // Ensure all DOM elements are available
-    if (input && display && result && submitBtn) {
+    if (input && display && result && submitBtn && modeIndicator) {
+        // Show current mode
+        if (isReviewMode) {
+            modeIndicator.textContent = "Review Mode: Practicing your mistakes";
+            modeIndicator.classList.add('review-mode');
+        } else {
+            const difficulty = sessionStorage.getItem('selectedDifficulty') || 'easy';
+            modeIndicator.textContent = `Mode: ${difficulty.charAt(0).toUpperCase() + difficulty.slice(1)}`;
+        }
+        
         function getNextWord() {
+            if (words.length === 0) {
+                if (display) display.textContent = "No words available!";
+                if (input) input.disabled = true;
+                if (submitBtn) submitBtn.disabled = true;
+                return;
+            }
+            
             currentIndex = Math.floor(Math.random() * words.length);
             currentWord = words[currentIndex];
-            if (display) {
-                display.textContent = currentWord;
-                setTimeout(() => {
-                    display.textContent = '?????';
-                }, 1000);
-            }
-            if (input) {
-                input.value = '';
-            }
-            if (result) {
-                result.textContent = '';
-            }
+            if (display) display.textContent = currentWord;
+            setTimeout(() => {
+                if (display) display.textContent = '?????';
+            }, 1000);
+            if (input) input.value = '';
+            if (result) result.textContent = '';
         }
 
         function checkSpelling() {
@@ -59,12 +88,24 @@
                     result.textContent = '😊 Correct!';
                     result.style.color = '#4CAF50';
                 }
+                
+                // If in review mode and correct, remove from wrong words
+                if (isReviewMode) {
+                    wrongWords = wrongWords.filter(word => word !== currentWord);
+                    localStorage.setItem('wrongWords', JSON.stringify(wrongWords));
+                    words = wrongWords; // Update current words list
+                }
             } else {
                 if (result) {
                     result.textContent = '😞 Try again! The word was: ' + currentWord;
                     result.style.color = '#f44336';
                 }
-                wrongWords.add(currentWord);
+                
+                // Add to wrong words if not already there
+                if (!wrongWords.includes(currentWord)) {
+                    wrongWords.push(currentWord);
+                    localStorage.setItem('wrongWords', JSON.stringify(wrongWords));
+                }
             }
             setTimeout(getNextWord, 2000);
         }
@@ -120,5 +161,17 @@
         font-size: 1.2rem;
         cursor: pointer;
         margin: 1rem 0;
+    }
+
+    .mode-indicator {
+        margin-top: 1rem;
+        text-align: center;
+        font-style: italic;
+        color: #666;
+    }
+    
+    .review-mode {
+        color: #2196F3;
+        font-weight: bold;
     }
 </style>
