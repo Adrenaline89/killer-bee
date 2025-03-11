@@ -10,11 +10,30 @@
 </div>
 
 <script>
-    const wordLists = {
-        easy: ["apple", "table", "happy"],
-        medium: ["journey", "whistle", "puzzle"],
-        hard: ["surveillance", "bureaucracy", "idiosyncrasy"]
-    };
+const wordLists = {
+    "easy": [
+        "apple", "table", "happy", "banana", "chair", "cloud", "pencil", "garden", "yellow", "monkey",
+        "window", "sunset", "rabbit", "butter", "tiger", "ocean", "pillow", "school", "family", "flower",
+        "friend", "bridge", "morning", "candle", "purple", "puzzle", "sketch", "guitar", "kitten", "blanket",
+        "island", "ticket", "painter", "bottle", "pebble", "soccer", "pocket", "cactus", "ladder", "cereal",
+        "parrot", "bicycle", "button", "cousin", "whistle", "goblin", "sticker", "picnic", "jungle", "puppy"
+    ],
+    "medium": [
+        "journey", "whistle", "puzzle", "trouble", "bravery", "lantern", "feather", "miracle", "whisper", "shimmer",
+        "pioneer", "magnify", "triumph", "reptile", "vibrant", "crescent", "glisten", "compass", "orchestra", "turmoil",
+        "jostle", "proclaim", "flicker", "horizon", "fragrant", "meadow", "gourmet", "liberty", "merchant", "rescue",
+        "tapestry", "abandon", "bargain", "conquer", "disguise", "fortress", "harvest", "invader", "journal", "kinship",
+        "lantern", "monarch", "nomadic", "outlandish", "paradox", "quiver", "radiance", "safeguard", "tranquil", "wander"
+    ],
+    "hard": [
+        "surveillance", "bureaucracy", "idiosyncrasy", "juxtaposition", "ephemeral", "quintessential", "magnanimous", "effervescent", "perspicacious", "obfuscate",
+        "xenophobia", "melancholy", "serendipity", "cacophony", "ineffable", "labyrinthine", "conflagration", "grandiloquent", "pseudonym", "mellifluous",
+        "zeitgeist", "perseverance", "reverberate", "unanimous", "subterfuge", "vicissitude", "xylophone", "whimsical", "vestibule", "tenacity",
+        "serpentine", "resplendent", "querulous", "propensity", "ostentatious", "nefarious", "misanthrope", "loquacious", "kaleidoscope", "jubilant",
+        "hyperbole", "gregarious", "fractious", "efficacious", "discombobulate", "contumacious", "bombastic", "anachronistic", "ameliorate", "aberration"
+    ]
+};
+
 
     // Initialize or load words from localStorage
     if (!localStorage.getItem('wordLists')) {
