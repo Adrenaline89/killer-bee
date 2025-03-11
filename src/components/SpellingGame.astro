@@ -4,36 +4,74 @@
 <div class="game-container">
     <div class="word-display"></div>
     <input type="text" class="word-input" placeholder="Type the word here..." />
+    <button class="submit-btn">Check</button>
     <div class="result"></div>
 </div>
 
 <script>
-    const wrongWords = new Set();
-    
-    // Sample word lists - expand these as needed
-    const words = {
-        easy: ['cat', 'dog', 'hat', 'run', 'jump'],
-        medium: ['beautiful', 'elephant', 'rainbow', 'bicycle'],
-        hard: ['extraordinary', 'sophisticated', 'phenomenon']
+    const wordLists = {
+        easy: ["apple", "table", "happy"],
+        medium: ["journey", "whistle", "puzzle"],
+        hard: ["surveillance", "bureaucracy", "idiosyncrasy"]
     };
 
-    let currentWord = '';
-    const input = document.querySelector('.word-input');
-    const display = document.querySelector('.word-display');
-    const result = document.querySelector('.result');
-
-    function checkSpelling(word, input) {
-        if (word === input.toLowerCase()) {
-            result.innerHTML = '😊';
-            result.style.color = '#4CAF50';
-        } else {
-            result.innerHTML = '😞';
-            result.style.color = '#f44336';
-            wrongWords.add(word);
-        }
+    // Initialize or load words from localStorage
+    if (!localStorage.getItem('wordLists')) {
+        localStorage.setItem('wordLists', JSON.stringify(wordLists));
     }
 
-    // Add event listeners here
+    const wrongWords = new Set();
+    const difficulty = sessionStorage.getItem('selectedDifficulty') || 'easy';
+    const storedWordLists = localStorage.getItem('wordLists') || JSON.stringify(wordLists);
+    const words = JSON.parse(storedWordLists)[difficulty];
+    
+    let currentWord = '';
+    let currentIndex = -1;
+    
+    const input = document.querySelector('.word-input') as HTMLInputElement;
+    const display = document.querySelector('.word-display') as HTMLElement;
+    const result = document.querySelector('.result') as HTMLElement;
+    const submitBtn = document.querySelector('.submit-btn') as HTMLButtonElement;
+
+    // Ensure all DOM elements are available
+    if (!input || !display || !result || !submitBtn) {
+        console.error('Required DOM elements not found');
+        return;
+    }
+
+    function getNextWord() {
+        currentIndex = Math.floor(Math.random() * words.length);
+        currentWord = words[currentIndex];
+        display.textContent = currentWord;
+        setTimeout(() => {
+            display.textContent = '?????';
+        }, 1000);
+        input.value = '';
+        result.textContent = '';
+    }
+
+    function checkSpelling() {
+        const userInput = input.value.trim().toLowerCase();
+        if (userInput === currentWord) {
+            result.textContent = '😊 Correct!';
+            result.style.color = '#4CAF50';
+        } else {
+            result.textContent = '😞 Wrong! The word was: ' + currentWord;
+            result.style.color = '#f44336';
+            wrongWords.add(currentWord);
+        }
+        setTimeout(getNextWord, 2000);
+    }
+
+    submitBtn.addEventListener('click', checkSpelling);
+    input.addEventListener('keyup', (e) => {
+        if (e.key === 'Enter') {
+            checkSpelling();
+        }
+    });
+
+    // Start the game
+    getNextWord();
 </script>
 
 <style>
@@ -62,5 +100,16 @@
     .result {
         font-size: 3rem;
         text-align: center;
+    }
+
+    .submit-btn {
+        width: 100%;
+        padding: 1rem;
+        background: #FFD700;
+        border: none;
+        border-radius: 6px;
+        font-size: 1.2rem;
+        cursor: pointer;
+        margin: 1rem 0;
     }
 </style>

@@ -2,11 +2,25 @@
 ---
 
 <div class="menu">
-    <button class="btn easy">Easy</button>
-    <button class="btn medium">Medium</button>
-    <button class="btn hard">Hard</button>
+    <button class="btn easy" data-difficulty="easy">Easy</button>
+    <button class="btn medium" data-difficulty="medium">Medium</button>
+    <button class="btn hard" data-difficulty="hard">Hard</button>
     <button class="btn review">Review Mistakes</button>
 </div>
+
+<script>
+    const buttons = document.querySelectorAll('.btn');
+    
+    buttons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const difficulty = btn.getAttribute('data-difficulty');
+            if (difficulty) {
+                sessionStorage.setItem('selectedDifficulty', difficulty);
+                window.location.href = '/game';
+            }
+        });
+    });
+</script>
 
 <style>
     .menu {

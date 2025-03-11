@@ -1,0 +1,58 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SpellingGame from '../components/SpellingGame.astro';
+---
+
+<Layout title="Spelling Quiz">
+    <main class="container">
+        <a href="/" class="home-btn">← Back to Menu</a>
+        <SpellingGame />
+    </main>
+</Layout>
+
+<style>
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 2rem;
+        position: relative;
+        min-height: 100vh;
+        //background: linear-gradient(135deg, #FFD700, #FFA500);
+    }
+    
+    .container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('/images/meadow.webp');
+        background-size: cover;
+        background-position: center;
+        z-index: -2;
+    }
+    
+    .container::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(255, 215, 0, 0.7);
+        z-index: -1;
+    }
+
+    .home-btn {
+        display: inline-block;
+        padding: 0.5rem 1rem;
+        background: white;
+        border-radius: 8px;
+        text-decoration: none;
+        color: #333;
+        margin-bottom: 2rem;
+        position: relative;
+        z-index: 2;
+    }
+</style>

@@ -1,3 +1,9 @@
+# TODO
+- editiblr word list
+- store in json
+- keep score
+
+
 # Astro Starter Kit: Basics
 
 ```sh

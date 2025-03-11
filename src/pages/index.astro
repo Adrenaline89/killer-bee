@@ -9,7 +9,7 @@ import SpellingGame from '../components/SpellingGame.astro';
     <main class="container">
         <BeeAnimation />
         <GameMenu />
-        <SpellingGame client:load />
+        <SpellingGame />
     </main>
 </Layout>
 
@@ -18,7 +18,13 @@ import SpellingGame from '../components/SpellingGame.astro';
         max-width: 800px;
         margin: 0 auto;
         padding: 2rem;
-        background: linear-gradient(135deg, #FFD700, #FFA500);
+        position: relative;
         min-height: 100vh;
+        //background: linear-gradient(135deg, #FFD700, #FFA500);
+    }
+
+    main > * {
+        position: relative;
+        z-index: 2;
     }
 </style>
